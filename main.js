@@ -1,4 +1,6 @@
-import { HashMap } from "./script.js";
+import { HashMap, HashSet } from "./script.js";
+
+// ====================== HashMap
 
 const table = new HashMap(50);
 
@@ -19,6 +21,8 @@ console.log(table.remove('apple'));
 
 console.log(table.length());
 
+console.log(table.has('jacket'));
+
 // table.clear();
 
 console.log(table.keys());
@@ -26,3 +30,15 @@ console.log(table.keys());
 console.log(table.values());
 
 console.log(table.entries());
+
+// ===================== HashSet
+
+const set = new HashSet();
+
+set.add("apple");
+set.add("banana");
+
+console.log(set.has("apple"));
+console.log(set.has("grape"));
+set.remove("apple");
+console.log(set.has("apple"));

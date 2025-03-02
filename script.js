@@ -133,3 +133,74 @@ export class HashMap {
     }
   }
 }
+
+export class HashSet {
+  constructor(capacity = 8) {
+    this.buckets = new Array(capacity);
+    this.size = 0;
+  }
+
+  hash(key) {
+    let hashCode = 0;
+
+    for (let i = 0; i < key.length; i++) {
+      hashCode += key.charCodeAt(i);
+    }
+
+    return hashCode % this.buckets.length;
+  }
+
+  add(key) {
+    const index = this.hash(key);
+    if (!this.buckets[index]) {
+      this.buckets[index] = [];
+    }
+
+    if (!this.buckets[index].includes(key)) {
+      this.buckets[index].push(key);
+      this.size++;
+
+      if (this.size / this.buckets.length > 0.75) {
+        this.resize();
+      }
+    }
+  }
+
+  has(key) {
+    const index = this.hash(key);
+    return this.buckets[index] ? this.buckets[index].includes(key) : false;
+  }
+
+  remove(key) {
+    const index = this.hash(key);
+    if (!this.buckets[index]) return false;
+
+    const keyIndex = this.buckets[index].indexOf(key);
+    if (keyIndex !== -1) {
+      this.buckets[index].splice(keyIndex, 1);
+      this.size--;
+      return true;
+    }
+
+    return false;
+  }
+
+  clear() {
+    this.buckets = new Array(this.buckets.length);
+    this.size = 0;
+  }
+
+  resize() {
+    const oldBuckets = this.buckets;
+    this.buckets = new Array(this.buckets.length * 2);
+    this.size = 0;
+
+    for (let bucket of oldBuckets) {
+      if (bucket) {
+        for (let key of bucket) {
+          this.add(key);
+        }
+      }
+    }
+  }
+}
